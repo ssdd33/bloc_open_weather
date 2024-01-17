@@ -1,22 +1,30 @@
+import 'package:bloc_open_weather/cubits/temp_settings/temp_settings_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SettingsPage extends StatefulWidget {
+class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
-  @override
-  State<SettingsPage> createState() => _SettingsPageState();
-}
-
-class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('settings'),
       ),
-      body: const Center(
-        child: Text('settings'),
-      ),
+      body: ListTile(
+          title: const Text('Temperature Unit'),
+          subtitle: const Text(
+            'Celsius/Fahrenheit (Default: Celsius)',
+            style: TextStyle(fontSize: 13),
+          ),
+          trailing: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Switch(
+                  value: context.watch<TempSettingsCubit>().state.tempUnit ==
+                      TempUnit.celsius,
+                  onChanged: (_) {
+                    context.read<TempSettingsCubit>().toggleTempUnit();
+                  }))),
     );
   }
 }

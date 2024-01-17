@@ -1,6 +1,8 @@
 import 'package:bloc_open_weather/constants/constants.dart';
+import 'package:bloc_open_weather/cubits/temp_settings/temp_settings_cubit.dart';
 import 'package:bloc_open_weather/cubits/weather/weather_cubit.dart';
 import 'package:bloc_open_weather/pages/search_page.dart';
+import 'package:bloc_open_weather/pages/settings_page.dart';
 import 'package:bloc_open_weather/widgets/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,28 +20,44 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('weather'), actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () async {
-              _city = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SearchPage(),
-                  ));
+        appBar: AppBar(
+          title: const Text('weather'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () async {
+                _city = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SearchPage(),
+                    ));
 
-              print('_city : $_city');
+                print('_city : $_city');
 
-              if (_city != null) {
-                context.read<WeatherCubit>().fetchWeather(_city!);
-              }
-            },
-          )
-        ]),
+                if (_city != null) {
+                  context.read<WeatherCubit>().fetchWeather(_city!);
+                }
+              },
+            ),
+            IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SettingsPage()));
+                },
+                icon: const Icon(Icons.settings)),
+          ],
+        ),
         body: _showWeather());
   }
 
   String showTemperature(double temp) {
+    final tempUnit = context.watch<TempSettingsCubit>().state.tempUnit;
+
+    if (tempUnit == TempUnit.fahrenheit) {
+      return '${((temp * 5 / 9) + 32).toStringAsFixed(2)}℉';
+    }
     return '${temp.toStringAsFixed(2)}℃';
   }
 

@@ -1,3 +1,4 @@
+import 'package:bloc_open_weather/cubits/temp_settings/temp_settings_cubit.dart';
 import 'package:bloc_open_weather/cubits/weather/weather_cubit.dart';
 import 'package:bloc_open_weather/pages/home_pages.dart';
 import 'package:bloc_open_weather/repositories/weather_repository.dart';
@@ -19,12 +20,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return RepositoryProvider(
       create: (context) => WeatherRepository(
-          weatherApiServices: WeatherApiServices(httpClient: http.Client())),
+        weatherApiServices: WeatherApiServices(
+          httpClient: http.Client(),
+        ),
+      ),
       child: MultiBlocProvider(
         providers: [
           BlocProvider<WeatherCubit>(
-              create: (context) => WeatherCubit(
-                  weatherRepository: context.read<WeatherRepository>()))
+            create: (context) => WeatherCubit(
+              weatherRepository: context.read<WeatherRepository>(),
+            ),
+          ),
+          BlocProvider<TempSettingsCubit>(
+            create: (context) => TempSettingsCubit(),
+          ),
         ],
         child: MaterialApp(
           title: 'Weather app',
