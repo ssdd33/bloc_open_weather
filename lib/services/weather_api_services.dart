@@ -54,7 +54,7 @@ class WeatherApiServices {
           'lat': '${directGeocoding.lat}',
           'lon': '${directGeocoding.lon}',
           'units': kUnit,
-          'appid': dotenv.env['APPID ']
+          'appid': dotenv.env['APPID']
         });
 
     try {
