@@ -1,4 +1,4 @@
-import 'package:bloc_open_weather/cubits/temp_settings/temp_settings_cubit.dart';
+import 'package:bloc_open_weather/blocs/temp_settings/temp_settings_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,10 +20,10 @@ class SettingsPage extends StatelessWidget {
           trailing: Padding(
               padding: const EdgeInsets.all(10),
               child: Switch(
-                  value: context.watch<TempSettingsCubit>().state.tempUnit ==
+                  value: context.watch<TempSettingsBloc>().state.tempUnit ==
                       TempUnit.celsius,
                   onChanged: (_) {
-                    context.read<TempSettingsCubit>().toggleTempUnit();
+                    context.read<TempSettingsBloc>().add(ToggleTempUnitEvent());
                   }))),
     );
   }
